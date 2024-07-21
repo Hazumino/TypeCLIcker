@@ -1,15 +1,37 @@
 #include"type_function.h"
 
+#define WORDXLINE 10
+
 // Keyboard practice functions
 
 void kbPractice()
 {
-  // Clear previous screen
-  clear();
 
   int random, count, row, col;
   int y ;
   int x ;
+  int wordLength = strlen(wordList);     
+  int groupCount;
+  int maxX = 10+x;
+  int charIndex = 0;
+  int yPos = 0;
+  int xPos = 0;
+  int lineNum = 0;
+
+  float wordCount = 0;
+  float errors = 1;
+  float charcount = 1;
+  float accuracy = 0;
+
+  bool wordFinished = false;
+
+  char wordList[] = "apple" ;
+  char** word = groupWords(wordList, WORDXLINE, &groupCount);
+  char currChar;
+
+  // Clear previous screen
+  clear();
+
 
   // Seed random number generator
   srand(time(NULL));
@@ -37,22 +59,6 @@ void kbPractice()
 
   refresh();
 
-  char wordList[] = "apple" ;
-  int wordLength = strlen(wordList);     
-  int groupCount;
-  char** word = groupWords(wordList, 10, &groupCount);
-  int maxX = 10+x;
-
-  int charIndex = 0;
-  int yPos = 0;
-  int xPos = 0;
-  bool wordFinished = false;
-  char currChar;
-  int lineNum = 0;
-  float wordCount = 0;
-  float errors = 1;
-  float charcount = 1;
-  float accuracy = 0;
 
   // Store Clock Values
   clock_t begin = time(NULL);
@@ -129,6 +135,8 @@ void kbPractice()
     }
   }
 }
+
+char* concatenateWord(char )
 
 // Function to concatenate n words into a single string
 char* concatenateWords(char **words, int start, int count) {
