@@ -9,19 +9,11 @@
 #include "menu.c"
 #include "type_function.c"
 #include <stdio.h>
-#include <string.h>
 #include <ncurses.h>
-#include <sqlite3.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <time.h>
 
-
-struct User
-{
-  int wpm;
-};
 
 void kbPractice();
 
@@ -46,40 +38,24 @@ int main()
   switch (menu(win))
   {
     case 0:
+      //TODO: Add ability to allow user to decide if to work on sentences or on words
       kbPractice();
       break;
 
     case 1:
+      //TODO: Add ability to allow user to decide if to work on sentences or on words
+      kbPractice();
       break;
 
     case 2:
+      //TODO: Settings function missing: allow user to select number of words, number of sentences;
+      break;
+
+    case 3:
       exit(0);
       break;
   }
 
   endwin();
   return 1;
-}
-
-
-
-// DB Functions
-void jsonToDb()
-{
-
-}
-
-
-void openDbConn()
-{
-  sqlite3 *db;
-  char *zErrMsg = 0;
-  int rc;
-
-  rc = sqlite3_open("test.db", &db);
-}
-
-void closeDbConn(sqlite3 *db)
-{
-  sqlite3_close(db);
 }

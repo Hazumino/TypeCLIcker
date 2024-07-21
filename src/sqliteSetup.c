@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
+char** getWordList();
+
 // Callback function for SQLite INSERT operation
 int callback(void *NotUsed, int argc, char **argv, char **azColName) {
     return 0;

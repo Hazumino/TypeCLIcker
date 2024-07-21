@@ -32,3 +32,17 @@ char* getList (sqlite3 *db, int numOfItems, int mode, Bool random)
   return 1;
 
 }
+
+void openDbConn()
+{
+  sqlite3 *db;
+  char *zErrMsg = 0;
+  int rc;
+
+  rc = sqlite3_open("test.db", &db);
+}
+
+void closeDbConn(sqlite3 *db)
+{
+  sqlite3_close(db);
+}

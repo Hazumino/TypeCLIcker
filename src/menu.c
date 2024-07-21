@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "../include/menu.h"
 #include <stdio.h>
 #include <string.h>
 #include <ncurses.h>
@@ -12,7 +12,7 @@ int menu(WINDOW *win)
 {
   int pointer;
 
-  char title[40] = "typing practice cli";
+  char title[40] = "Typing Practice CLI";
   int titlelength = strlen(title);
 
   // title screen
@@ -21,9 +21,10 @@ int menu(WINDOW *win)
   pointer = 6;
 
   mvwprintw(win, pointer, 20, ">" );
-  mvwprintw(win, 6, 40-(strlen(title)/2), "sentence practice" );
-  mvwprintw(win, 8, 40-(strlen(title)/2), "settings" );
-  mvwprintw(win, 10, 40-(strlen(title)/2),"exit" );
+  mvwprintw(win, 6, 40-(strlen(title)/2), "words practice" );
+  mvwprintw(win, 8, 40-(strlen(title)/2), "sentence practice" );
+  mvwprintw(win, 10, 40-(strlen(title)/2), "settings" );
+  mvwprintw(win, 12, 40-(strlen(title)/2),"exit" );
   wrefresh(win);
 
   while(1)
@@ -32,7 +33,7 @@ int menu(WINDOW *win)
     switch(arrow)
     {
       case 27:
-        pointer = movepointer(win,pointer,10,6);
+        pointer = movepointer(win,pointer,12,6);
         break;
       case 10:
         if (pointer == 6 )
@@ -46,6 +47,10 @@ int menu(WINDOW *win)
         else if (pointer == 10 )
         {
           return 2;
+        }
+        else if (pointer == 12 )
+        {
+          return 3;
         }
     }
   }

@@ -1,4 +1,4 @@
-#include"type_function.h"
+#include"../include/type_function.h"
 
 #define WORDXLINE 10
 
@@ -10,7 +10,6 @@ void kbPractice()
   int random, count, row, col;
   int y ;
   int x ;
-  int wordLength = strlen(wordList);     
   int groupCount;
   int maxX = 10+x;
   int charIndex = 0;
@@ -26,6 +25,8 @@ void kbPractice()
   bool wordFinished = false;
 
   char wordList[] = "apple" ;
+  int wordLength = strlen(wordList);     
+
   char** word = groupWords(wordList, WORDXLINE, &groupCount);
   char currChar;
 
@@ -136,7 +137,6 @@ void kbPractice()
   }
 }
 
-char* concatenateWord(char )
 
 // Function to concatenate n words into a single string
 char* concatenateWords(char **words, int start, int count) {
