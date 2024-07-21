@@ -1,35 +1,84 @@
 // WARNING: Unfinished
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sqlite3.h>
-#include "sqlConnection.h"
+#include "../include/sqlConnection.h"
 
-char* getList (sqlite3 *db, int numOfItems, int mode, Bool random)
+#define MAX_NAME_LENGTH 256 
+
+int main()
 {
+  sqlite3 *db;
+
+  char **list = getList(db, 50, 1, 0);
+
+  for (int i = 0; i < 20; i++)
+  {
+    printf("%s", list[i]);
+  }
+}
+
+char** getList (sqlite3 *db, int numOfItems, int mode, _Bool random)
+{
+  char sql[256]; // SQL query string
   int openDB = sqlite3_open("example.db", &db);
+  char *instructions;
+  char ** names;
+    int num_rows = 0;   // Number of rows (names) retrieved
+  sqlite3_stmt *stmt;
+    int rc;
 
   if (openDB)
   {
     printf("Error opening db \n %s", sqlite3_errmsg(db));
   }
 
-  switch(mode)
+  switch (mode)
   {
-  case 1:
-    char *instructions = "SELECT * FROM words ORDER BY RANDOM() LIMIT %d;", ;
+  case (1):
+    snprintf(sql, sizeof(sql), "SELECT word FROM words WHERE language = \"english\" ORDER BY RANDOM() LIMIT %d;", numOfItems);
     break;
 
   case 2:
-    char *instructions = "SELECT * FROM sentences ORDER BY RANDOM() LIMIT %d;";
+    snprintf(sql, sizeof(sql), "SELECT word FROM words WHERE language = \"english\" ORDER BY RANDOM() LIMIT %d;", numOfItems);
     break;
 
   default:
     exit(1);
   }
 
-  openDB = sqlite3_exec(db, instructions, callback, 0,0);
+    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return rc;
+    }
 
-  return 1;
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+        const unsigned char *name = sqlite3_column_text(stmt, 0);
+        // Allocate memory for the new name and store it
+        names = realloc(names, sizeof(char *) * (num_rows + 1));
+        if (names == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return SQLITE_NOMEM;
+        }
+        names[num_rows] = malloc(MAX_NAME_LENGTH);
+        if (names[num_rows] == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            sqlite3_finalize(stmt);
+            sqlite3_close(db);
+            return SQLITE_NOMEM;
+        }
+        strncpy(names[num_rows], (const char *)name, MAX_NAME_LENGTH - 1);
+        names[num_rows][MAX_NAME_LENGTH - 1] = '\0'; // Ensure null termination
+        num_rows++;
+    }
+
+  return names;
 
 }
 
@@ -46,3 +95,4 @@ void closeDbConn(sqlite3 *db)
 {
   sqlite3_close(db);
 }
+
