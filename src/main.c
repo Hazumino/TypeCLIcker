@@ -8,6 +8,7 @@
 
 #include "menu.c"
 #include "type_function.c"
+#include "type_function_sentence.c"
 #include <stdio.h>
 #include <ncurses.h>
 #include <sys/types.h>
@@ -46,7 +47,7 @@ int main()
 
       case 1:
         //TODO: Add ability to allow user to decide if to work on sentences or on words
-        kbPractice();
+        kbPractice_sentence();
         break;
 
       case 2:

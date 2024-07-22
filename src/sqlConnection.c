@@ -6,7 +6,7 @@
 #include <sqlite3.h>
 #include "../include/sqlConnection.h"
 
-#define MAX_NAME_LENGTH 256 
+#define MAX_NAME_LENGTH 1000 
 
 
 char** getList (int numOfItems, int mode, _Bool random)
@@ -32,7 +32,7 @@ char** getList (int numOfItems, int mode, _Bool random)
     break;
 
   case 2:
-    snprintf(sql, sizeof(sql), "SELECT word FROM words WHERE language = \"english\" ORDER BY RANDOM() LIMIT %d;", numOfItems);
+    snprintf(sql, sizeof(sql), "SELECT sentence FROM sentence WHERE language = \"english\" ORDER BY RANDOM() LIMIT %d;", numOfItems);
     break;
 
   default:

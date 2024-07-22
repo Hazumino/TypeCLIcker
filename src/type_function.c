@@ -42,7 +42,6 @@ void kbPractice()
 
   // SIZE SETTINGS
   getmaxyx(stdscr, y,x);
-  box(stdscr, 0, 0);
   noecho();
   
   // COLOR SETTINGS
@@ -85,7 +84,8 @@ void kbPractice()
     {
         mvwprintw(stdscr,y/4+i,XCENTERING,word[i]);
     }
-
+    // TO prettify the screen
+    box(stdscr, 0, 0);
 
     while (!wordFinished)
     {
