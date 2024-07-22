@@ -1,8 +1,9 @@
 #include"../include/type_function.h"
+#include"keyboardChange.c"
 #include "sqlConnection.c"
 
 #define WORDXLINE 10
-#define XCENTERING 30
+#define XCENTERING 60
 #define TOTWORD 40
 
 // Keyboard practice functions
@@ -60,6 +61,8 @@ void kbPractice()
   init_pair(3, COLOR_RED, -1);
   // Red text for front of the line of chars
   init_pair(4, COLOR_BLUE, -1);
+  // Blue text for front of the line of chars
+  init_pair(5, COLOR_BLUE, 4);
 
   refresh();
 
@@ -82,7 +85,7 @@ void kbPractice()
     while (!wordFinished)
     {
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
-      char inputChar = getch();
+      char inputChar =keyboardChange(1,getch());
       if (inputChar == currChar )
       {
         errors++;
@@ -91,7 +94,14 @@ void kbPractice()
         charIndex++;
         currChar = word[lineNum][charIndex];
         xPos++;
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(4));
+        if(currChar==' '|| currChar=='\n')
+        {
+          mvaddch(y/4+yPos,XCENTERING+xPos,' ' | COLOR_PAIR(5));
+        }
+        else
+        {
+          mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(4));
+        }
         if (currChar == '\0' && lineNum == groupCount-1)
         {
               wordCount++;
@@ -110,10 +120,15 @@ void kbPractice()
               mvwprintw(win, 7, 10, "Time: %.2f", totTime);
               mvwprintw(win, 9, 10, "Words per Minute: %.2lf", wordCount/(totTime/60.0));
               mvwprintw(win, 11, 10,"Accuracy: %.2f\%", (charcount/errors)*100);
+              mvwprintw(win, 20, 10,"Press any button to exit!", (charcount/errors)*100);
 
               // refreshing the window
               wrefresh(win);
+          if(getch())
+          {
               exit(1);
+
+          }
         }
         else if (currChar == '\0' && lineNum < groupCount-1)
         {
@@ -137,35 +152,6 @@ void kbPractice()
       refresh();
     }
   }
-}
-
-
-// Function to concatenate n words into a single string
-char* concatenateWords(char **words, int start, int count) {
-    int length = 0;
-    for (int i = 0; i < count; i++) {
-        length += strlen(words[start + i]) + 1; // +1 for space or null terminator
-    }
-
-    char *result = (char *)malloc(length * sizeof(char));
-    if (!result) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
-
-    result[0] = '\0'; // Initialize the result string
-
-    for (int i = 0; i < count; i++) {
-        strcat(result, words[start + i]);
-        if (i < count-1) {
-            strcat(result, " ");
-        }
-        else{ 
-            strcat(result, "\n");
-        }
-    }
-
-    return result;
 }
 
 // Function to split input string into words and group them into strings of n words

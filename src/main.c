@@ -20,42 +20,45 @@ void kbPractice();
 // Struct representing one instance of line of code
 int main()
 {
-  int x, y, pointer, terminalRows, terminalCols;
-  // Seed random number generator
-  srand(time(NULL));
-
-  initscr();
-  cbreak();
-  noecho();
-
-  getmaxyx(stdscr, terminalRows, terminalCols);
-  WINDOW *win = newwin(terminalRows,terminalCols,0,0);
-  refresh();
-
-  box(win, 0,0);
-
-  int sentence = 0;
-  switch (menu(win))
+  for(;;)
   {
-    case 0:
-      //TODO: Add ability to allow user to decide if to work on sentences or on words
-      kbPractice();
-      break;
+    int x, y, pointer, terminalRows, terminalCols;
+    // Seed random number generator
+    srand(time(NULL));
 
-    case 1:
-      //TODO: Add ability to allow user to decide if to work on sentences or on words
-      kbPractice();
-      break;
+    initscr();
+    cbreak();
+    noecho();
 
-    case 2:
-      //TODO: Settings function missing: allow user to select number of words, number of sentences;
-      break;
+    getmaxyx(stdscr, terminalRows, terminalCols);
+    WINDOW *win = newwin(terminalRows,terminalCols,0,0);
+    refresh();
 
-    case 3:
-      exit(0);
-      break;
-  }
+    box(win, 0,0);
 
-  endwin();
-  return 1;
+    int sentence = 0;
+    switch (menu(win))
+    {
+      case 0:
+        //TODO: Add ability to allow user to decide if to work on sentences or on words
+        kbPractice();
+        break;
+
+      case 1:
+        //TODO: Add ability to allow user to decide if to work on sentences or on words
+        kbPractice();
+        break;
+
+      case 2:
+        //TODO: Settings function missing: allow user to select number of words, number of sentences;
+        break;
+
+      case 3:
+        exit(0);
+        break;
+    }
+
+    endwin();
+    }
+    return 1;
 }
