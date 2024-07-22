@@ -1,6 +1,9 @@
 #include"../include/type_function.h"
+#include "sqlConnection.c"
 
 #define WORDXLINE 10
+#define XCENTERING 30
+#define TOTWORD 40
 
 // Keyboard practice functions
 
@@ -24,10 +27,10 @@ void kbPractice()
 
   bool wordFinished = false;
 
-  char wordList[] = "apple" ;
+  char **wordList = getList(TOTWORD, 1, 0) ;
   int wordLength = strlen(wordList);     
 
-  char** word = groupWords(wordList, WORDXLINE, &groupCount);
+  char** word = groupWords(wordList, TOTWORD, WORDXLINE, &groupCount);
   char currChar;
 
   // Clear previous screen
@@ -64,6 +67,7 @@ void kbPractice()
   // Store Clock Values
   clock_t begin = time(NULL);
 
+    currChar = word[lineNum][charIndex];
   for(;;)
   {
     mvwprintw(stdscr,5,10,"Word Count: ");
@@ -71,30 +75,24 @@ void kbPractice()
     mvwprintw(stdscr,5,27,"Accuracy: ");
     for (int i = 0; i < groupCount; i++) 
     {
-        mvwprintw(stdscr,y/4+i,10,word[i]);
+        mvwprintw(stdscr,y/4+i,XCENTERING,word[i]);
     }
 
 
     while (!wordFinished)
     {
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
-      currChar = word[lineNum][charIndex];
       char inputChar = getch();
-      if (inputChar == currChar)
+      if (inputChar == currChar )
       {
         errors++;
         charcount++;
-        mvaddch(y/4+yPos,10+xPos,currChar | COLOR_PAIR(1));
+        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(1));
         charIndex++;
         currChar = word[lineNum][charIndex];
         xPos++;
-        mvaddch(y/4+yPos,10+xPos,currChar | COLOR_PAIR(4));
-        if (inputChar == ' ')
-          {
-            wordCount++;
-            mvwprintw(stdscr,5,22, "%.0f", wordCount);
-          }
-        if (currChar == '\0' && lineNum == groupCount+1)
+        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(4));
+        if (currChar == '\0' && lineNum == groupCount-1)
         {
               wordCount++;
               mvwprintw(stdscr,5,22, "%.0f", wordCount);
@@ -115,21 +113,25 @@ void kbPractice()
 
               // refreshing the window
               wrefresh(win);
-          exit(0);
+              exit(1);
         }
-        if (currChar == '\0' && lineNum != groupCount+1)
+        else if (currChar == '\0' && lineNum < groupCount-1)
         {
-          lineNum++;
-          charcount++;
-          charIndex = 0;
-          currChar = word[lineNum][charIndex];
           yPos++;
           xPos = 0;
+          charIndex = 0;
+          lineNum++;
+          currChar = word[lineNum][charIndex];
         }
+        if (inputChar == ' ')
+          {
+            wordCount++;
+            mvwprintw(stdscr,5,22, "%.0f", wordCount);
+          }
       }
       else
       {
-        mvaddch(y/4+yPos,10+xPos,currChar | COLOR_PAIR(3));
+        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(3));
         errors++;
       }
       refresh();
@@ -167,61 +169,39 @@ char* concatenateWords(char **words, int start, int count) {
 }
 
 // Function to split input string into words and group them into strings of n words
-char** groupWords(const char *input, int n, int *groupCount) {
-    // First, split the input string into words
-    char **words = NULL;
-    int wordCount = 0;
+char** groupWords(const char *words[], int num_words, int words_per_chunk, int *num_chunks) {
+    // Calculate the number of chunks needed
+    *num_chunks = (num_words + words_per_chunk - 1) / words_per_chunk;
 
-    const char *ptr = input;
-    const char *start;
-    int wordLength;
-
-    while (*ptr != '\0') {
-        // Skip leading spaces
-        while (*ptr == ' ') {
-            ptr++;
-        }
-        if (*ptr == '\0') break;
-
-        // Find the end of the current word
-        start = ptr;
-        while (*ptr != ' ' && *ptr != '\0') {
-            ptr++;
-        }
-        wordLength = ptr - start;
-
-        // Allocate memory for the word and copy it
-        words = (char **)realloc(words, (wordCount + 1) * sizeof(char *));
-        words[wordCount] = (char *)malloc((wordLength + 1) * sizeof(char));
-        strncpy(words[wordCount], start, wordLength);
-        words[wordCount][wordLength] = '\0'; // Null-terminate the word
-
-        wordCount++;
-    }
-
-    // Calculate the number of groups needed
-    *groupCount = (wordCount + n - 1) / n; // Ceiling of wordCount / n
-
-    // Allocate memory for the groups of words
-    char **groups = (char **)malloc(*groupCount * sizeof(char *));
-    if (!groups) {
-        perror("malloc");
+    // Allocate memory for the array of chunk strings
+    char **chunks = malloc(*num_chunks * sizeof(char*));
+    if (chunks == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
 
-    // Group the words into strings of n words each
-    for (int i = 0; i < *groupCount; i++) {
-        int count = (i * n + n <= wordCount) ? n : wordCount - i * n;
-        groups[i] = concatenateWords(words, i * n, count);
+    for (int i = 0; i < *num_chunks; i++) {
+        // Allocate memory for each chunk string
+        chunks[i] = malloc(1024 * sizeof(char)); // Allocate large enough memory for each chunk
+        if (chunks[i] == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        // Initialize the chunk string
+        chunks[i][0] = '\0'; // Ensure it's an empty string
+
+        // Concatenate words into the current chunk
+        for (int j = 0; j < words_per_chunk && i * words_per_chunk + j < num_words; j++) {
+            if (j > 0) {
+                strcat(chunks[i], " "); // Add a space between words
+            }
+            strcat(chunks[i], words[i * words_per_chunk + j]);
+        }
+        strcat(chunks[i], "\n"); // Add a space between words
     }
 
-    // Free the words array
-    for (int i = 0; i < wordCount; i++) {
-        free(words[i]);
-    }
-    free(words);
-
-    return groups;
+    return chunks;
 }
 
 void freeWords(char ***groups, int groupCount, int n) {

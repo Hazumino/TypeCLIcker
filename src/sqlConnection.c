@@ -8,20 +8,10 @@
 
 #define MAX_NAME_LENGTH 256 
 
-int main()
+
+char** getList (int numOfItems, int mode, _Bool random)
 {
   sqlite3 *db;
-
-  char **list = getList(db, 50, 1, 0);
-
-  for (int i = 0; i < 20; i++)
-  {
-    printf("%s", list[i]);
-  }
-}
-
-char** getList (sqlite3 *db, int numOfItems, int mode, _Bool random)
-{
   char sql[256]; // SQL query string
   int openDB = sqlite3_open("example.db", &db);
   char *instructions;

@@ -2,7 +2,7 @@
 #define SQLCONNH
 
 // Function used to obtain a number of random words
-char** getList (sqlite3 *db, int numOfItems, int mode, _Bool random);
+char** getList (int numOfItems, int mode, _Bool random);
 
 // Function used to insert json into the database of words
 void insertJson(sqlite3 *db);
