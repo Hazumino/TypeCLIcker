@@ -12,8 +12,9 @@ char keyboardChange(int type, char c)
       return change2dvorak(c);
 
   }
-
+  return 0;
 }
+
 char change2dvorak(char ch) {
     switch (ch) {
         case 'a': return 'a'; case 'A': return 'A';

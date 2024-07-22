@@ -11,10 +11,7 @@
 void kbPractice()
 {
 
-  int random, count, row, col;
-  int y ;
-  int x ;
-  int groupCount;
+  int random, count, row, col, y, x, groupCount;
   int maxX = 10+x;
   int charIndex = 0;
   int yPos = 0;
@@ -29,7 +26,6 @@ void kbPractice()
   bool wordFinished = false;
 
   char **wordList = getList(TOTWORD, 1, 0) ;
-  int wordLength = strlen(wordList);     
 
   char** word = groupWords(wordList, TOTWORD, WORDXLINE, &groupCount);
   char currChar;
@@ -53,16 +49,24 @@ void kbPractice()
   start_color();
   // Enable transparency
   assume_default_colors(-1, -1);
+  //
   // Green Color for text
   init_pair(1, COLOR_GREEN, -1);
+  //
   // White text for front of the line of chars
   init_pair(2, COLOR_WHITE, -1);
+  //
   // Red text for front of the line of chars
   init_pair(3, COLOR_RED, -1);
+  //
   // Red text for front of the line of chars
   init_pair(4, COLOR_BLUE, -1);
+  //
   // Blue text for front of the line of chars
   init_pair(5, COLOR_BLUE, 4);
+  //
+  // Blue text for front of the line of chars
+  init_pair(6, COLOR_RED, 1);
 
   refresh();
 
@@ -70,7 +74,8 @@ void kbPractice()
   // Store Clock Values
   clock_t begin = time(NULL);
 
-    currChar = word[lineNum][charIndex];
+  currChar = word[lineNum][charIndex];
+
   for(;;)
   {
     mvwprintw(stdscr,5,10,"Word Count: ");
@@ -91,8 +96,7 @@ void kbPractice()
         errors++;
         charcount++;
         mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(1));
-        charIndex++;
-        currChar = word[lineNum][charIndex];
+        currChar = word[lineNum][++charIndex];
         xPos++;
         if(currChar==' '|| currChar=='\n')
         {
@@ -146,7 +150,14 @@ void kbPractice()
       }
       else
       {
+        if(currChar==' '|| currChar=='\n')
+        {
+        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(6));
+        }
+        else
+        {
         mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(3));
+        }
         errors++;
       }
       refresh();
@@ -155,7 +166,7 @@ void kbPractice()
 }
 
 // Function to split input string into words and group them into strings of n words
-char** groupWords(const char *words[], int num_words, int words_per_chunk, int *num_chunks) {
+char** groupWords(char *words[], int num_words, int words_per_chunk, int *num_chunks) {
     // Calculate the number of chunks needed
     *num_chunks = (num_words + words_per_chunk - 1) / words_per_chunk;
 
@@ -186,16 +197,6 @@ char** groupWords(const char *words[], int num_words, int words_per_chunk, int *
         }
         strcat(chunks[i], "\n"); // Add a space between words
     }
-
     return chunks;
 }
 
-void freeWords(char ***groups, int groupCount, int n) {
-    for (int i = 0; i < groupCount; i++) {
-        for (int j = 0; j < n && groups[i][j] != NULL; j++) {
-            free(groups[i][j]);
-        }
-        free(groups[i]);
-    }
-    free(groups);
-}

@@ -43,7 +43,7 @@ char** getList (int numOfItems, int mode, _Bool random)
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
-        return rc;
+        return (char**) 'c';
     }
 
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
@@ -54,14 +54,14 @@ char** getList (int numOfItems, int mode, _Bool random)
             fprintf(stderr, "Memory allocation failed\n");
             sqlite3_finalize(stmt);
             sqlite3_close(db);
-            return SQLITE_NOMEM;
+            return (char**) SQLITE_NOMEM;
         }
         names[num_rows] = malloc(MAX_NAME_LENGTH);
         if (names[num_rows] == NULL) {
             fprintf(stderr, "Memory allocation failed\n");
             sqlite3_finalize(stmt);
             sqlite3_close(db);
-            return SQLITE_NOMEM;
+            return (char**) SQLITE_NOMEM;
         }
         strncpy(names[num_rows], (const char *)name, MAX_NAME_LENGTH - 1);
         names[num_rows][MAX_NAME_LENGTH - 1] = '\0'; // Ensure null termination
