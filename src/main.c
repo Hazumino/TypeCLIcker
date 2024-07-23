@@ -6,7 +6,7 @@
 // WARNING: Think on methods to randomly select words from the DB to then add onto a big string.
 
 
-#include "menu.c"
+#include "main_menu.c"
 #include "type_function.c"
 #include "type_function_sentence.c"
 #include <stdio.h>
@@ -42,7 +42,7 @@ int main()
     {
       case 0:
         //TODO: Add ability to allow user to decide if to work on sentences or on words
-        kbPractice();
+        kbPractice(1,1);
         break;
 
       case 1:

@@ -72,11 +72,13 @@ void kbPractice_sentence()
 
   for(;;)
   {
-    mvwprintw(stdscr,5,10,"Word Count: ");
-    mvwprintw(stdscr,5,22, "%.0f", wordCount);
+    mvwprintw(stdscr,5,9,"Sentence Count: ");
+    mvwprintw(stdscr,5,25, "%.0f", lineNum);
     mvwprintw(stdscr,5,27,"Accuracy: ");
     for (int i = 0; i < TOTSENTENCE; i++) 
     {
+        mvwprintw(stdscr,y/4+i,XCENTERING-7,"%d",(i+1));
+        mvwprintw(stdscr,y/4+i,XCENTERING-4,"-");
         mvwprintw(stdscr,y/4+i,XCENTERING,word[i]);
     }
     // TO prettify the screen
@@ -101,7 +103,7 @@ void kbPractice_sentence()
         {
           mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(4));
         }
-        if (currChar == '\0' && lineNum == groupCount-1)
+        if (currChar == '\0' && lineNum == TOTSENTENCE-1)
         {
               wordCount++;
               mvwprintw(stdscr,5,22, "%.0f", wordCount);
@@ -129,7 +131,7 @@ void kbPractice_sentence()
 
           }
         }
-        else if (currChar == '\0' && lineNum < groupCount-1)
+        else if (currChar == '\0' && lineNum < TOTSENTENCE-1)
         {
           yPos++;
           xPos = 0;
@@ -137,11 +139,6 @@ void kbPractice_sentence()
           lineNum++;
           currChar = word[lineNum][charIndex];
         }
-        if (inputChar == ' ')
-          {
-            wordCount++;
-            mvwprintw(stdscr,5,22, "%.0f", wordCount);
-          }
       }
       else
       {

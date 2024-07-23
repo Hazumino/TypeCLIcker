@@ -2,13 +2,13 @@
 #include"keyboardChange.c"
 #include "sqlConnection.c"
 
-#define WORDXLINE 10
+#define WORDXLINE 15
 #define XCENTERING 10
-#define TOTWORD 40
+#define TOTWORD 80
 
 // Keyboard practice functions
 
-void kbPractice()
+void kbPractice(int mode, int kbType)
 {
 
   int random, count, row, col, y, x, groupCount;
@@ -74,6 +74,7 @@ void kbPractice()
   clock_t begin = time(NULL);
 
   currChar = word[lineNum][charIndex];
+  int start_col = (x - strlen(word[0])) / 2;
 
   for(;;)
   {
@@ -82,7 +83,7 @@ void kbPractice()
     mvwprintw(stdscr,5,27,"Accuracy: ");
     for (int i = 0; i < groupCount; i++) 
     {
-        mvwprintw(stdscr,y/4+i,XCENTERING,word[i]);
+        mvwprintw(stdscr,y/4+i,start_col,word[i]);
     }
     // TO prettify the screen
     box(stdscr, 0, 0);
@@ -95,16 +96,16 @@ void kbPractice()
       {
         errors++;
         charcount++;
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(1));
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(1));
         currChar = word[lineNum][++charIndex];
         xPos++;
         if(currChar==' '|| currChar=='\n')
         {
-          mvaddch(y/4+yPos,XCENTERING+xPos,' ' | COLOR_PAIR(5));
+          mvaddch(y/4+yPos,start_col+xPos,' ' | COLOR_PAIR(5));
         }
         else
         {
-          mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(4));
+          mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(4));
         }
         if (currChar == '\0' && lineNum == groupCount-1)
         {
@@ -141,6 +142,7 @@ void kbPractice()
           charIndex = 0;
           lineNum++;
           currChar = word[lineNum][charIndex];
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(4));
         }
         if (inputChar == ' ')
           {
@@ -152,11 +154,11 @@ void kbPractice()
       {
         if(currChar==' '|| currChar=='\n')
         {
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(6));
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(6));
         }
         else
         {
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(3));
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(3));
         }
         errors++;
       }
