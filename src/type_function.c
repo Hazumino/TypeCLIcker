@@ -3,7 +3,7 @@
 #include "sqlConnection.c"
 
 #define WORDXLINE 10
-#define XCENTERING 60
+#define XCENTERING 10
 #define TOTWORD 40
 
 // Keyboard practice functions

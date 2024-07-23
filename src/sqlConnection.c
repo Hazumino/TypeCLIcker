@@ -6,7 +6,7 @@
 #include <sqlite3.h>
 #include "../include/sqlConnection.h"
 
-#define MAX_NAME_LENGTH 1000 
+#define MAX_NAME_LENGTH 256 
 
 
 char** getList (int numOfItems, int mode, _Bool random)
@@ -15,8 +15,8 @@ char** getList (int numOfItems, int mode, _Bool random)
   char sql[256]; // SQL query string
   int openDB = sqlite3_open("example.db", &db);
   char *instructions;
-  char ** names;
-    int num_rows = 0;   // Number of rows (names) retrieved
+  char ** names = NULL;
+  int num_rows = 0;   // Number of rows (names) retrieved
   sqlite3_stmt *stmt;
     int rc;
 
@@ -49,13 +49,19 @@ char** getList (int numOfItems, int mode, _Bool random)
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         const unsigned char *name = sqlite3_column_text(stmt, 0);
         // Allocate memory for the new name and store it
-        names = realloc(names, sizeof(char *) * (num_rows + 1));
-        if (names == NULL) {
+        char **new_names = realloc(names, sizeof(char *) * (num_rows + 1));
+        if (new_names == NULL) {
             fprintf(stderr, "Memory allocation failed\n");
+            // Free previously allocated memory
+            for (int i = 0; i < num_rows; i++) {
+                free(names[i]);
+            }
+            free(names);
             sqlite3_finalize(stmt);
             sqlite3_close(db);
-            return (char**) SQLITE_NOMEM;
+            return SQLITE_NOMEM;
         }
+        names = new_names;
         names[num_rows] = malloc(MAX_NAME_LENGTH);
         if (names[num_rows] == NULL) {
             fprintf(stderr, "Memory allocation failed\n");
