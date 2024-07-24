@@ -12,4 +12,8 @@ TypeCLIcker is a lightweight CLI program that allows anyone to practice their ty
 - Ability to adjust the numbers of Words/Sentences total and per line.
 - Time Attack Mode
 
+## Installation
+j
+
+## Example
 ![Alt Text](demo.gif)
