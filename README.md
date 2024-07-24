@@ -1,1 +1,1 @@
-![Alt Text](example.gif)
+![Alt Text](demo.gif)
