@@ -13,7 +13,20 @@ TypeCLIcker is a lightweight CLI program that allows anyone to practice their ty
 - Time Attack Mode
 
 ## Installation
-j
+
+```
+git clone https://github.com/Hazumino/TypeCLIcker
+
+cd TypeCLIcker/
+
+make
+```
+
+### How to Run 
+
+```
+./typeclicker
+```
 
 ## Example
 ![Alt Text](demo.gif)
