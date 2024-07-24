@@ -23,8 +23,9 @@ int menu(WINDOW *win)
   mvwprintw(win, pointer, 20, ">" );
   mvwprintw(win, 6, 40-(strlen(title)/2), "words practice" );
   mvwprintw(win, 8, 40-(strlen(title)/2), "sentence practice" );
-  mvwprintw(win, 10, 40-(strlen(title)/2), "settings" );
-  mvwprintw(win, 12, 40-(strlen(title)/2),"exit" );
+  mvwprintw(win, 10, 40-(strlen(title)/2), "time attack" );
+  mvwprintw(win, 12, 40-(strlen(title)/2), "settings" );
+  mvwprintw(win, 14, 40-(strlen(title)/2),"exit" );
   wrefresh(win);
 
   while(1)
@@ -33,7 +34,7 @@ int menu(WINDOW *win)
     switch(arrow)
     {
       case 27:
-        pointer = movepointer(win,pointer,12,6);
+        pointer = movepointer(win,pointer,14,6);
         break;
       case 10:
         if (pointer == 6 )
@@ -51,6 +52,10 @@ int menu(WINDOW *win)
         else if (pointer == 12 )
         {
           return 3;
+        }
+        else if (pointer == 14 )
+        {
+          return 4;
         }
     }
   }

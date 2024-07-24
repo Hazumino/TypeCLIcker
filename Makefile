@@ -5,7 +5,7 @@ SRC = $(wildcard src/main.c)
 OBJ = $(SRC:.c=.o)
 TARGET = typeclicker 
 
-all: $(TARGET)
+all:$(TARGET)
 
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)

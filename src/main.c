@@ -9,6 +9,7 @@
 #include "main_menu.c"
 #include "type_function.c"
 #include "type_function_sentence.c"
+#include "time_attack.c"
 #include <stdio.h>
 #include <ncurses.h>
 #include <sys/types.h>
@@ -52,9 +53,14 @@ int main()
 
       case 2:
         //TODO: Settings function missing: allow user to select number of words, number of sentences;
+        timeAttack();
         break;
 
       case 3:
+        exit(0);
+        break;
+
+      case 4:
         exit(0);
         break;
     }
