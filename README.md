@@ -29,4 +29,8 @@ make
 ```
 
 ## Example
-![Alt Text](demo.gif)
+### Words Practice
+![Alt Text](others/words_demo.gif)
+
+### Sentence Practice
+![Alt Text](others/sentence_demo.gif)
