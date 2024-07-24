@@ -13,7 +13,7 @@ char** getList (int numOfItems, int mode, _Bool random)
 {
   sqlite3 *db;
   char sql[256]; // SQL query string
-  int openDB = sqlite3_open("example.db", &db);
+  int openDB = sqlite3_open("others/example.db", &db);
   char *instructions;
   char ** names = NULL;
   int num_rows = 0;   // Number of rows (names) retrieved
