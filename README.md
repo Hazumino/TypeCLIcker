@@ -33,3 +33,6 @@ make
 
 ### Sentence Practice
 ![Alt Text](others/sentence_demo.gif)
+
+### Time Attack
+![Alt Text](others/time_attack_demo.gif)
