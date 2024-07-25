@@ -81,7 +81,7 @@ void timeAttack()
   int average;
   int difficultyVal[] = {100000, 97000, 85000, 80000, 74000};
   int difficulty = 0;
-  WINDOW *gameWindow = newwin(y/4-4+groupCount,longestString(word)+3 , y/4+2, start_col);
+  WINDOW *gameWindow = newwin(y/4-4+groupCount,longestString(word,groupCount)+3 , y/4+2, start_col);
  
 
   for(;;)
@@ -102,10 +102,10 @@ void timeAttack()
     while (!wordFinished)
     {
     long corruption = get_current_time_us();
-    if (difftime(corruption, corruption_begin) > 100000)
+    if (difftime(corruption, corruption_begin) > difficultyVal[difficulty])
     {
       corruption_begin = get_current_time_us();
-      if (corrX == longestString(word)+2)
+      if (corrX == longestString(word, groupCount)+2)
       {
         corrY++;
         corrX = 1;
@@ -205,11 +205,12 @@ void timeAttack()
           wattron(gameWindow,COLOR_PAIR(4));
           mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
           wattroff(gameWindow, COLOR_PAIR(4));
+          box(gameWindow, 0,0);
         }
         if (inputChar == ' ')
           {
             wordCount++;
-            mvwprintw(gameWindow,5,22, "%.0f", wordCount);
+            mvwprintw(stdscr,5,22, "%.0f", wordCount);
           }
       }
     refresh();
@@ -225,11 +226,10 @@ long get_current_time_us() {
     return ts.tv_sec * 1000000 + ts.tv_nsec / 1000;
 }
 
-int longestString(char **words)
+int longestString(char **words, int max_string)
 {
-  size_t size = sizeof(words) / sizeof(words[0]);
   int largest = 0;
-  for (int i = 0; i < size; i++)
+  for (int i = 0; i < max_string; i++)
   {
     if (largest < strlen(words[i]))
     {
