@@ -67,7 +67,7 @@ void kbPractice_sentence()
 
   // Store Clock Values
   clock_t begin = time(NULL);
-
+  int start_col = (x - strlen(word[0])) / 2;
   currChar = word[lineNum][charIndex];
 
   for(;;)
@@ -77,9 +77,9 @@ void kbPractice_sentence()
     mvwprintw(stdscr,5,27,"Accuracy: ");
     for (int i = 0; i < TOTSENTENCE; i++) 
     {
-        mvwprintw(stdscr,y/4+i,XCENTERING-7,"%d",(i+1));
-        mvwprintw(stdscr,y/4+i,XCENTERING-4,"-");
-        mvwprintw(stdscr,y/4+i,XCENTERING,word[i]);
+        mvwprintw(stdscr,y/4+i,start_col-7,"%d",(i+1));
+        mvwprintw(stdscr,y/4+i,start_col-4,"-");
+        mvwprintw(stdscr,y/4+i,start_col,word[i]);
     }
     // TO prettify the screen
     box(stdscr, 0, 0);
@@ -92,16 +92,16 @@ void kbPractice_sentence()
       {
         errors++;
         charcount++;
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(1));
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(1));
         currChar = word[lineNum][++charIndex];
         xPos++;
         if(currChar==' '|| currChar=='\n')
         {
-          mvaddch(y/4+yPos,XCENTERING+xPos,' ' | COLOR_PAIR(5));
+          mvaddch(y/4+yPos,start_col+xPos,' ' | COLOR_PAIR(5));
         }
         else
         {
-          mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(4));
+          mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(4));
         }
         if (currChar == '\0' && lineNum == TOTSENTENCE-1)
         {
@@ -144,11 +144,11 @@ void kbPractice_sentence()
       {
         if(currChar==' '|| currChar=='\n')
         {
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(6));
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(6));
         }
         else
         {
-        mvaddch(y/4+yPos,XCENTERING+xPos,currChar | COLOR_PAIR(3));
+        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(3));
         }
         errors++;
       }

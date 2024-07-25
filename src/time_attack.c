@@ -1,7 +1,7 @@
 #include  "../include/time_attack.h"
 
 #define WORDXLINE 15
-#define XCENTERING 10
+#define XCENTERING 0
 #define TOTWORD 200
 
 // Keyboard practice functions
@@ -25,7 +25,7 @@ void timeAttack()
 
   char **wordList = getList(TOTWORD, 1, 0) ;
 
-  char** word = groupWords(wordList, TOTWORD, WORDXLINE, &groupCount);
+  char** word = groupWords(wordList, TOTWORD, 15, &groupCount);
   char currChar;
 
   // Clear previous screen
@@ -75,15 +75,20 @@ void timeAttack()
   long corruption_begin = get_current_time_us();
 
   currChar = word[lineNum][charIndex];
-  int start_col = (x - strlen(word[0])) / 2;
+  int start_col = (x - longestString(word,groupCount)) / 2.2;
   int corrX;
   int corrY = 1;
   int average;
   int difficultyVal[] = {100000, 97000, 85000, 80000, 74000};
   int difficulty = 0;
-  WINDOW *gameWindow = newwin(y/4-4+groupCount,longestString(word,groupCount)+3 , y/4+2, start_col);
- 
+  WINDOW *gameWindow = newwin(y/4+groupCount,longestString(word,groupCount)+3 , y/4+2, start_col);
+  WINDOW *gameBorder = newwin(y/4+groupCount+2,longestString(word,groupCount)+5 , y/4+2-1, start_col-1);
+    box(stdscr, 0, 0);
+    scrollok(gameWindow, TRUE);
 
+    box(gameBorder, 0, 0);
+    wrefresh(stdscr);
+    wrefresh(gameBorder);
   for(;;)
   {
     mvwprintw(stdscr,5,10,"Word Count: ");
@@ -96,7 +101,7 @@ void timeAttack()
     }
     corrX = 1;
     // TO prettify the screen
-    box(gameWindow, 0,0);
+    wrefresh(gameBorder);
     wrefresh(gameWindow);
 
     while (!wordFinished)
@@ -163,7 +168,7 @@ void timeAttack()
         else
         {
           wattron(gameWindow,COLOR_PAIR(4));
-          mvprintw(gameWindow,yPos,xPos,"%c", currChar);
+          mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
           wattroff(gameWindow,COLOR_PAIR(4));
         }
         if (currChar == '\0' && lineNum == groupCount-1)
@@ -196,16 +201,16 @@ void timeAttack()
         }
         else if (currChar == '\0' && lineNum < groupCount-1)
         {
-          yPos++;
+          corrY -= 1;
           xPos = 1;
           charIndex = 0;
           lineNum++;
           currChar = word[lineNum][charIndex];
-          scrl(1);
+          scroll(gameWindow);
           wattron(gameWindow,COLOR_PAIR(4));
           mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
           wattroff(gameWindow, COLOR_PAIR(4));
-          box(gameWindow, 0,0);
+          box(gameBorder, 0,0);
         }
         if (inputChar == ' ')
           {
@@ -214,6 +219,7 @@ void timeAttack()
           }
       }
     refresh();
+    wrefresh(gameBorder);
     wrefresh(gameWindow);
     }
   }

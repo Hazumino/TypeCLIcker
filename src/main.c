@@ -7,6 +7,7 @@
 
 
 #include "main_menu.c"
+#include "settings.c"
 #include "type_function.c"
 #include "type_function_sentence.c"
 #include "time_attack.c"
@@ -57,7 +58,7 @@ int main()
         break;
 
       case 3:
-        exit(0);
+        settings();
         break;
 
       case 4:

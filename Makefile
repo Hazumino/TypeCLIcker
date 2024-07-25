@@ -5,7 +5,8 @@ SRC = $(wildcard src/main.c)
 OBJ = $(SRC:.c=.o)
 TARGET = typeclicker 
 
-all:$(TARGET)
+all: $(TARGET)
+
 
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
@@ -16,4 +17,4 @@ $(TARGET): $(OBJ)
 clean:
 	rm -f $(OBJ) $(TARGET)
 
-.PHONY: all clean
+.PHONY: clean
