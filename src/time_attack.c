@@ -2,7 +2,7 @@
 
 #define WORDXLINE 15
 #define XCENTERING 10
-#define TOTWORD 80
+#define TOTWORD 200
 
 // Keyboard practice functions
 
@@ -12,8 +12,8 @@ void timeAttack()
   int random, count, row, col, y, x, groupCount;
   int maxX = 10+x;
   int charIndex = 0;
-  int yPos = 0;
-  int xPos = 0;
+  int yPos = 3;
+  int xPos = 1;
   int lineNum = 0;
 
   int wordCount = 1;
@@ -77,10 +77,12 @@ void timeAttack()
   currChar = word[lineNum][charIndex];
   int start_col = (x - strlen(word[0])) / 2;
   int corrX;
-  int corrY = y/4-2;
+  int corrY = 1;
   int average;
   int difficultyVal[] = {100000, 97000, 85000, 80000, 74000};
   int difficulty = 0;
+  WINDOW *gameWindow = newwin(y/4-4+groupCount,longestString(word)+3 , y/4+2, start_col);
+ 
 
   for(;;)
   {
@@ -90,34 +92,56 @@ void timeAttack()
     mvwprintw(stdscr,7,10,"Difficulty: %d", difficulty);
     for (int i = 0; i < groupCount; i++) 
     {
-        average += strlen(word[i]);
-        mvwprintw(stdscr,y/4+i,start_col,word[i]);
+        mvwprintw(gameWindow,i+3,1,word[i]);
     }
-    corrX = start_col;
+    corrX = 1;
     // TO prettify the screen
-    box(stdscr, 0, 0);
-    box(stdscr, 0, y/4-3);
+    box(gameWindow, 0,0);
+    wrefresh(gameWindow);
 
     while (!wordFinished)
     {
-    if (wordCount % 20 == 0) {
-                    difficulty++; // Increase the difficulty every 20 words
-                }
     long corruption = get_current_time_us();
-    if (difftime(corruption, corruption_begin) > difficultyVal[difficulty])
+    if (difftime(corruption, corruption_begin) > 100000)
     {
       corruption_begin = get_current_time_us();
-      if (corrX > average/groupCount)
+      if (corrX == longestString(word)+2)
       {
         corrY++;
-        corrX = start_col;
+        corrX = 1;
       }
-        if (corrX ==  start_col+xPos && corrY == y/4+yPos)
+      if (corrX == xPos && corrY == yPos)
+      {
+            nodelay(stdscr, FALSE); // Non-blocking input
+            wordCount++;
+            mvwprintw(stdscr,5,22, "%.0f", wordCount);
+
+            clock_t end = time(NULL);
+            WINDOW *win = newwin(y/2, x/2,y/5, x/4);
+            refresh();
+
+            // making box border with default border styles
+            box(win, 0, 0);
+
+            // move and print in window
+            float totTime =  difftime(end,begin);
+            mvwprintw(win, 5, 10, "Words Count: %.0f", wordCount);
+            mvwprintw(win, 7, 10, "Time: %.2f", totTime);
+            mvwprintw(win, 9, 10, "Words per Minute: %.2lf", wordCount/(totTime/60.0));
+            mvwprintw(win, 11, 10,"Accuracy: %.2f\%", (charcount/errors)*100);
+            mvwprintw(win, 20, 10,"Press any button to exit!", (charcount/errors)*100);
+
+            // refreshing the window
+            wrefresh(win);
+        if(getch())
         {
-          exit(0);
+            exit(1);
+
         }
-      mvaddch(corrY,corrX++,'a' + rand() % 26 | COLOR_PAIR(7));
-      refresh();
+      }
+      wattron(gameWindow, COLOR_PAIR(7));
+      mvwprintw(gameWindow,corrY,corrX++,"%c", ('a' + rand() % 26));
+      wattroff(gameWindow, COLOR_PAIR(7));
     }
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
       char inputChar =keyboardChange(1,getch());
@@ -125,16 +149,22 @@ void timeAttack()
       {
         errors++;
         charcount++;
-        mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(1));
+        wattron(gameWindow, COLOR_PAIR(1));
+        mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+        wattroff(gameWindow, COLOR_PAIR(1));
         currChar = word[lineNum][++charIndex];
         xPos++;
         if(currChar==' '|| currChar=='\n')
         {
-          mvaddch(y/4+yPos,start_col+xPos,' ' | COLOR_PAIR(5));
+          wattron(gameWindow, COLOR_PAIR(5));
+          mvwprintw(gameWindow,yPos,xPos,"%c", ' ');
+          wattroff(gameWindow, COLOR_PAIR(5));
         }
         else
         {
-          mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(4));
+          wattron(gameWindow,COLOR_PAIR(4));
+          mvprintw(gameWindow,yPos,xPos,"%c", currChar);
+          wattroff(gameWindow,COLOR_PAIR(4));
         }
         if (currChar == '\0' && lineNum == groupCount-1)
         {
@@ -167,20 +197,23 @@ void timeAttack()
         else if (currChar == '\0' && lineNum < groupCount-1)
         {
           yPos++;
-          xPos = 0;
+          xPos = 1;
           charIndex = 0;
           lineNum++;
           currChar = word[lineNum][charIndex];
           scrl(1);
-          mvaddch(y/4+yPos,start_col+xPos,currChar | COLOR_PAIR(4));
+          wattron(gameWindow,COLOR_PAIR(4));
+          mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+          wattroff(gameWindow, COLOR_PAIR(4));
         }
         if (inputChar == ' ')
           {
             wordCount++;
-            mvwprintw(stdscr,5,22, "%.0f", wordCount);
+            mvwprintw(gameWindow,5,22, "%.0f", wordCount);
           }
       }
-      refresh();
+    refresh();
+    wrefresh(gameWindow);
     }
   }
 }
@@ -190,4 +223,18 @@ long get_current_time_us() {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return ts.tv_sec * 1000000 + ts.tv_nsec / 1000;
+}
+
+int longestString(char **words)
+{
+  size_t size = sizeof(words) / sizeof(words[0]);
+  int largest = 0;
+  for (int i = 0; i < size; i++)
+  {
+    if (largest < strlen(words[i]))
+    {
+      largest = strlen(words[i]);
+    }
+  }
+  return largest;
 }
