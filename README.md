@@ -3,13 +3,11 @@
 TypeCLIcker is a lightweight CLI program written in C that allows anyone to practice their typing right from their command line. 
 
 ## Features
-- [x] Words practicing 
-- [x] Sentence practicing
+- [x] Words/Sentence practicing 
 - [x] Lightweight utilisation of SQLlite database, and C
-- [ ] Ability to adjust the numbers of Words/Sentences total and per line. (Settings option)
-- [ ] Change to different keyboard layouts (As of now, one can utilise DVORAK).
-- [ ] Local Leaderboard
-- [ ] Time Attack Mode
+- [x] Time Attack Mode
+- [ ] Settings option: Change Total Words, Words per line, Keyboard Layout
+- [ ] "Endless" amount of words for the time attack mode
 
 ## Installation
 
