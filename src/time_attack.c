@@ -73,12 +73,13 @@ void timeAttack()
   // Store Clock Values
   clock_t begin = time(NULL);
   long corruption_begin = get_current_time_us();
-
+  char inputChar;
   currChar = word[lineNum][charIndex];
   int start_col = (x - longestString(word,groupCount)) / 2.2;
   int corrX;
   int corrY = 1;
   int average;
+  _Bool inputMade = 0;
   int difficultyVal[] = {100000, 97000, 85000, 80000, 74000};
   int difficulty = 0;
   WINDOW *gameWindow = newwin(y/4+groupCount,longestString(word,groupCount)+3 , y/4+2, start_col);
@@ -149,75 +150,98 @@ void timeAttack()
       wattroff(gameWindow, COLOR_PAIR(7));
     }
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
-      char inputChar =keyboardChange(1,getch());
-      if (inputChar == currChar )
+      inputChar = keyboardChange(1,getch());
+      if (inputChar != ERR)
       {
-        errors++;
-        charcount++;
-        wattron(gameWindow, COLOR_PAIR(1));
-        mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
-        wattroff(gameWindow, COLOR_PAIR(1));
-        currChar = word[lineNum][++charIndex];
-        xPos++;
-        if(currChar==' '|| currChar=='\n')
+        if (inputChar == currChar )
         {
-          wattron(gameWindow, COLOR_PAIR(5));
-          mvwprintw(gameWindow,yPos,xPos,"%c", ' ');
-          wattroff(gameWindow, COLOR_PAIR(5));
+          wordCount++;
+          errors++;
+          charcount++;
+          wattron(gameWindow, COLOR_PAIR(1));
+          mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+          wattroff(gameWindow, COLOR_PAIR(1));
+          currChar = word[lineNum][++charIndex];
+          xPos++;
+          if(currChar==' '|| currChar=='\n')
+          {
+            wattron(gameWindow, COLOR_PAIR(5));
+            mvwprintw(gameWindow,yPos,xPos,"%c", ' ');
+            wattroff(gameWindow, COLOR_PAIR(5));
+          }
+          else
+          {
+            wattron(gameWindow,COLOR_PAIR(4));
+            mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+            wattroff(gameWindow,COLOR_PAIR(4));
+          }
+          if (currChar == '\0' && lineNum == groupCount-1)
+          {
+                wordCount++;
+                mvwprintw(stdscr,5,22, "%.0f", wordCount);
+
+                clock_t end = time(NULL);
+                WINDOW *win = newwin(y/2, x/2,y/5, x/4);
+                refresh();
+
+                // making box border with default border styles
+                box(win, 0, 0);
+
+                // move and print in window
+                float totTime =  difftime(end,begin);
+                mvwprintw(win, 5, 10, "Words Count: %.0f", wordCount);
+                mvwprintw(win, 7, 10, "Time: %.2f", totTime);
+                mvwprintw(win, 9, 10, "Words per Minute: %.2lf", wordCount/(totTime/60.0));
+                mvwprintw(win, 11, 10,"Accuracy: %.2f\%", (charcount/errors)*100);
+                mvwprintw(win, 20, 10,"Press any button to exit!", (charcount/errors)*100);
+
+                // refreshing the window
+                wrefresh(win);
+            if(getch())
+            {
+                exit(1);
+
+            }
+          }
+          else if (currChar == '\0' && lineNum < groupCount-1)
+          {
+            corrY -= 1;
+            xPos = 1;
+            charIndex = 0;
+            lineNum++;
+            currChar = word[lineNum][charIndex];
+            scroll(gameWindow);
+            wattron(gameWindow,COLOR_PAIR(4));
+            mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+            wattroff(gameWindow, COLOR_PAIR(4));
+            box(gameBorder, 0,0);
+          }
+          if (inputChar == ' ')
+            {
+              wordCount++;
+              mvwprintw(stdscr,5,22, "%.0f", wordCount);
+            }
         }
         else
         {
-          wattron(gameWindow,COLOR_PAIR(4));
-          mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
-          wattroff(gameWindow,COLOR_PAIR(4));
-        }
-        if (currChar == '\0' && lineNum == groupCount-1)
-        {
-              wordCount++;
-              mvwprintw(stdscr,5,22, "%.0f", wordCount);
-
-              clock_t end = time(NULL);
-              WINDOW *win = newwin(y/2, x/2,y/5, x/4);
-              refresh();
-
-              // making box border with default border styles
-              box(win, 0, 0);
-
-              // move and print in window
-              float totTime =  difftime(end,begin);
-              mvwprintw(win, 5, 10, "Words Count: %.0f", wordCount);
-              mvwprintw(win, 7, 10, "Time: %.2f", totTime);
-              mvwprintw(win, 9, 10, "Words per Minute: %.2lf", wordCount/(totTime/60.0));
-              mvwprintw(win, 11, 10,"Accuracy: %.2f\%", (charcount/errors)*100);
-              mvwprintw(win, 20, 10,"Press any button to exit!", (charcount/errors)*100);
-
-              // refreshing the window
-              wrefresh(win);
-          if(getch())
+          if(currChar==' '|| currChar=='\n')
           {
-              exit(1);
+            wattron(gameWindow,COLOR_PAIR(6));
+            mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+            wattroff(gameWindow, COLOR_PAIR(6));
 
           }
-        }
-        else if (currChar == '\0' && lineNum < groupCount-1)
-        {
-          corrY -= 1;
-          xPos = 1;
-          charIndex = 0;
-          lineNum++;
-          currChar = word[lineNum][charIndex];
-          scroll(gameWindow);
-          wattron(gameWindow,COLOR_PAIR(4));
-          mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
-          wattroff(gameWindow, COLOR_PAIR(4));
-          box(gameBorder, 0,0);
-        }
-        if (inputChar == ' ')
+          else
           {
-            wordCount++;
-            mvwprintw(stdscr,5,22, "%.0f", wordCount);
+            wattron(gameWindow,COLOR_PAIR(3));
+            mvwprintw(gameWindow,yPos,xPos,"%c", currChar);
+            wattroff(gameWindow, COLOR_PAIR(3));
           }
+          errors++;
+        }
+        inputChar = ERR;
       }
+
     refresh();
     wrefresh(gameBorder);
     wrefresh(gameWindow);
