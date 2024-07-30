@@ -93,7 +93,7 @@ void timeAttack()
   for(;;)
   {
     mvwprintw(stdscr,5,10,"Word Count: ");
-    mvwprintw(stdscr,5,22, "%.0f", wordCount);
+    mvwprintw(stdscr,5,22, "%d", wordCount);
     mvwprintw(stdscr,5,27,"Accuracy: ");
     mvwprintw(stdscr,7,10,"Difficulty: %d", difficulty);
     for (int i = 0; i < groupCount; i++) 
@@ -155,7 +155,6 @@ void timeAttack()
       {
         if (inputChar == currChar )
         {
-          wordCount++;
           errors++;
           charcount++;
           wattron(gameWindow, COLOR_PAIR(1));
@@ -178,7 +177,6 @@ void timeAttack()
           if (currChar == '\0' && lineNum == groupCount-1)
           {
                 wordCount++;
-                mvwprintw(stdscr,5,22, "%.0f", wordCount);
 
                 clock_t end = time(NULL);
                 WINDOW *win = newwin(y/2, x/2,y/5, x/4);
@@ -219,7 +217,7 @@ void timeAttack()
           if (inputChar == ' ')
             {
               wordCount++;
-              mvwprintw(stdscr,5,22, "%.0f", wordCount);
+              mvwprintw(stdscr,5,22, "%d", wordCount);
             }
         }
         else
