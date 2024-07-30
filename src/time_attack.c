@@ -80,8 +80,9 @@ void timeAttack()
   int corrY = 1;
   int average;
   _Bool inputMade = 0;
-  int difficultyVal[] = {100000, 97000, 85000, 80000, 74000};
-  int difficulty = 0;
+  int difficultyVal[] = {0, 100000, 97000, 94000, 91000, 87000};
+  int difficulty = 1;
+  _Bool difficultyChange = 1;
   WINDOW *gameWindow = newwin(y/4+groupCount,longestString(word,groupCount)+3 , y/4+2, start_col);
   WINDOW *gameBorder = newwin(y/4+groupCount+2,longestString(word,groupCount)+5 , y/4+2-1, start_col-1);
     box(stdscr, 0, 0);
@@ -145,6 +146,19 @@ void timeAttack()
 
         }
       }
+      if (wordCount % 10 == 0 && difficultyChange) 
+      {
+          difficultyChange = 0;
+          mvwprintw(stdscr,7,10,"Difficulty: %d", difficulty);
+          difficulty++;
+
+      }
+      else {
+          if (difficulty < 6)
+          {
+            difficultyChange = 1;
+          }
+        }
       wattron(gameWindow, COLOR_PAIR(7));
       mvwprintw(gameWindow,corrY,corrX++,"%c", ('a' + rand() % 26));
       wattroff(gameWindow, COLOR_PAIR(7));
