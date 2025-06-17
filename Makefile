@@ -14,7 +14,13 @@ $(TARGET): $(OBJ)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
-	rm -f $(OBJ) $(TARGET)
+setup: sqliteSetup
+	./sqliteSetup
 
-.PHONY: clean
+sqliteSetup: src/sqliteSetup.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
+
+clean:
+	rm -f $(OBJ) $(TARGET) sqliteSetup
+
+.PHONY: clean setup

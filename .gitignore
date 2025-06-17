@@ -1,9 +1,10 @@
 # Build artifacts
 *.o
 typeclicker
+sqliteSetup
 
 # Database files
-*.db
+example.db
 
 # macOS
 .DS_Store

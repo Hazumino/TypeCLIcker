@@ -115,6 +115,7 @@ int main()
     openDB = sqlite3_exec(db, insert_sql, callback, 0, 0);
   }
 
-  return 1;
+  sqlite3_close(db);
+  return 0;
 
 }

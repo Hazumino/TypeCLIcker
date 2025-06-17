@@ -15,6 +15,7 @@ TypeCLIcker is a lightweight CLI program written in C that allows users to pract
 git clone https://github.com/Hazumino/TypeCLIcker
 cd TypeCLIcker
 make
+make setup  # Initialize database with words and sentences
 ```
 
 ## Usage
