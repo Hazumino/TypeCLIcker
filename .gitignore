@@ -6,6 +6,9 @@ sqliteSetup
 # Database files
 example.db
 
+# User settings
+settings.conf
+
 # macOS
 .DS_Store
 

@@ -8,10 +8,9 @@
 #include "type_function.h"
 #include "sqlConnection.h"
 #include "keyboardChange.h"
+#include "settings.h"
 
-#define WORDXLINE 15
 #define XCENTERING 0
-#define TOTWORD 200
 
 // Keyboard practice functions
 
@@ -32,9 +31,9 @@ void timeAttack()
 
   bool wordFinished = false;
 
-  char **wordList = getList(TOTWORD, 1, 0) ;
+  char **wordList = getList(g_settings.total_words, 1, 0) ;
 
-  char** word = groupWords(wordList, TOTWORD, 15, &groupCount);
+  char** word = groupWords(wordList, g_settings.total_words, g_settings.words_per_line, &groupCount);
   char currChar;
 
   // Clear previous screen
@@ -173,7 +172,7 @@ void timeAttack()
       wattroff(gameWindow, COLOR_PAIR(7));
     }
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
-      inputChar = keyboardChange(1,getch());
+      inputChar = keyboardChange(g_settings.keyboard_layout, getch());
       if (inputChar != ERR)
       {
         if (inputChar == currChar )

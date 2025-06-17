@@ -7,10 +7,9 @@
 #include "type_function.h"
 #include "keyboardChange.h"
 #include "sqlConnection.h"
+#include "settings.h"
 
-#define WORDXLINE 15
 #define XCENTERING 10
-#define TOTWORD 80
 
 // Keyboard practice functions
 
@@ -31,9 +30,9 @@ void kbPractice(int mode, int kbType)
 
   bool wordFinished = false;
 
-  char **wordList = getList(TOTWORD, 1, 0) ;
+  char **wordList = getList(g_settings.total_words, 1, 0) ;
 
-  char** word = groupWords(wordList, TOTWORD, WORDXLINE, &groupCount);
+  char** word = groupWords(wordList, g_settings.total_words, g_settings.words_per_line, &groupCount);
   char currChar;
 
   // Clear previous screen
@@ -97,7 +96,7 @@ void kbPractice(int mode, int kbType)
     while (!wordFinished)
     {
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
-      char inputChar =keyboardChange(1,getch());
+      char inputChar = keyboardChange(kbType, getch());
       if (inputChar == currChar )
       {
         errors++;

@@ -14,6 +14,9 @@
 
 int main()
 {
+    // Initialize settings
+    load_settings();
+    
     for(;;)
     {
         int terminalRows, terminalCols;
@@ -32,7 +35,7 @@ int main()
         switch (menu(win))
         {
             case 0:
-                kbPractice(1, 1);
+                kbPractice(1, g_settings.keyboard_layout);
                 break;
 
             case 1:

@@ -7,6 +7,7 @@
 #include "type_function_sentence.h"
 #include "sqlConnection.h"
 #include "keyboardChange.h"
+#include "settings.h"
 
 #define TOTSENTENCE 10
 
@@ -95,7 +96,7 @@ void kbPractice_sentence()
     while (!wordFinished)
     {
       mvwprintw(stdscr,5,37,"%.2f", (charcount/errors)*100);
-      char inputChar =keyboardChange(1,getch());
+      char inputChar = keyboardChange(g_settings.keyboard_layout, getch());
       if (inputChar == currChar )
       {
         errors++;
