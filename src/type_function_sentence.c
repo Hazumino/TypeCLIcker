@@ -1,4 +1,12 @@
-#include"../include/type_function_sentence.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <ncurses.h>
+#include "type_function_sentence.h"
+#include "sqlConnection.h"
+#include "keyboardChange.h"
 
 #define TOTSENTENCE 10
 

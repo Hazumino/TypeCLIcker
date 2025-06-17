@@ -1,36 +1,35 @@
 # TypeCLIcker
 
-TypeCLIcker is a lightweight CLI program written in C that allows anyone to practice their typing right from their command line. 
+TypeCLIcker is a lightweight CLI program written in C that allows users to practice their typing skills directly from the command line. 
 
 ## Features
-- [x] Words/Sentence practicing 
-- [x] Lightweight utilisation of SQLlite database, and C
+- [x] Words and sentence practice 
+- [x] Lightweight SQLite database integration
 - [x] Time Attack Mode
-- [ ] Settings option: Change Total Words, Words per line, Keyboard Layout
-- [ ] "Endless" amount of words for the time attack mode
+- [ ] Settings option: Change total words, words per line, keyboard layout
+- [ ] Endless word generation for time attack mode
 
 ## Installation
 
-```
+```bash
 git clone https://github.com/Hazumino/TypeCLIcker
-
-cd TypeCLIcker/
-
+cd TypeCLIcker
 make
 ```
 
-### How to Run 
+## Usage
 
-```
+```bash
 ./typeclicker
 ```
 
-## Example
+## Examples
+
 ### Words Practice
-![Alt Text](others/words_demo.gif)
+![Words Practice Demo](others/words_demo.gif)
 
 ### Sentence Practice
-![Alt Text](others/sentence_demo.gif)
+![Sentence Practice Demo](others/sentence_demo.gif)
 
-### Time Attack
-![Alt Text](others/time_attack_demo.gif)
+### Time Attack Mode
+![Time Attack Demo](others/time_attack_demo.gif)

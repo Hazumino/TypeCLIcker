@@ -1,4 +1,4 @@
-#include "../include/keyboardChange.h"
+#include "keyboardChange.h"
 #include <stdio.h>
 
 char keyboardChange(int type, char c)

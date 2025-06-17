@@ -1,6 +1,8 @@
 #ifndef SQLCONNH
 #define SQLCONNH
 
+#include <sqlite3.h>
+
 // Function used to obtain a number of random words
 char** getList (int numOfItems, int mode, _Bool random);
 

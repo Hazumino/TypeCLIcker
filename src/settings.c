@@ -1,8 +1,8 @@
-#include  "../include/settings.h"
-// Keyboard practice functions
+#include <stdlib.h>
+#include "settings.h"
 
 void settings()
 {
-  exit(0);
+    exit(0);
 }
 

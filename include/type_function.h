@@ -7,6 +7,6 @@ char** groupWords(char *words[], int num_words, int words_per_chunk, int *num_ch
 
 void freeWords(char ***groups, int groupCount, int n);
 
-void kbPractice();
+void kbPractice(int mode, int kbType);
 
 #endif /* ifndef  */

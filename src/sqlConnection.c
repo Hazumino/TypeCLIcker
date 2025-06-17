@@ -1,10 +1,8 @@
-// WARNING: Unfinished
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
-#include "../include/sqlConnection.h"
+#include "sqlConnection.h"
 
 #define MAX_NAME_LENGTH 256 
 
@@ -59,7 +57,7 @@ char** getList (int numOfItems, int mode, _Bool random)
             free(names);
             sqlite3_finalize(stmt);
             sqlite3_close(db);
-            return SQLITE_NOMEM;
+            return NULL;
         }
         names = new_names;
         names[num_rows] = malloc(MAX_NAME_LENGTH);

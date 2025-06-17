@@ -1,4 +1,4 @@
-#include "../include/main_menu.h"
+#include "main_menu.h"
 #include <stdio.h>
 #include <string.h>
 #include <ncurses.h>

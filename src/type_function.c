@@ -1,6 +1,12 @@
-#include"../include/type_function.h"
-#include"keyboardChange.c"
-#include "sqlConnection.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <ncurses.h>
+#include "type_function.h"
+#include "keyboardChange.h"
+#include "sqlConnection.h"
 
 #define WORDXLINE 15
 #define XCENTERING 10

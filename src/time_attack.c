@@ -1,4 +1,13 @@
-#include  "../include/time_attack.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <ncurses.h>
+#include "time_attack.h"
+#include "type_function.h"
+#include "sqlConnection.h"
+#include "keyboardChange.h"
 
 #define WORDXLINE 15
 #define XCENTERING 0

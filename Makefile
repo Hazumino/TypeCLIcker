@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -lsqlite3 -lncurses
-LDFLAGS = -lm
-SRC = $(wildcard src/main.c)
+CFLAGS = -Wall -Wextra -std=c99 -Iinclude
+LDFLAGS = -lsqlite3 -lncurses -lm
+SRC = $(filter-out src/sqliteSetup.c, $(wildcard src/*.c))
 OBJ = $(SRC:.c=.o)
 TARGET = typeclicker 
 
@@ -9,7 +9,7 @@ all: $(TARGET)
 
 
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -1,2 +1,17 @@
+# Build artifacts
+*.o
 typeclicker
+
+# Database files
+*.db
+
+# macOS
 .DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Build directory
+build/
